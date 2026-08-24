@@ -1,0 +1,274 @@
+/* ============================================================
+   75% LEDGER — Attendance Register
+   Blueprint / instrument-panel theme
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg: #0A1826;
+  --bg-deep: #071120;
+  --grid-line: rgba(96, 200, 230, 0.055);
+  --panel: #0F2138;
+  --panel-2: #122744;
+  --border: #21456B;
+  --border-soft: #1A3352;
+  --ink: #DCEAF3;
+  --ink-dim: #7C97AE;
+  --ink-faint: #4C6480;
+  --cyan: #52D6EE;
+  --cyan-dim: rgba(82, 214, 238, 0.18);
+  --safe: #38D996;
+  --safe-dim: rgba(56, 217, 150, 0.15);
+  --danger: #F2554A;
+  --danger-dim: rgba(242, 85, 74, 0.16);
+  --amber: #F2A93C;
+  --track: #1B3350;
+  --shadow: rgba(0, 0, 0, 0.45);
+  --radius: 8px;
+}
+
+*{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  margin:0;
+  min-height:100vh;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  padding-bottom: 70px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono{ font-family:'JetBrains Mono', monospace; }
+
+.wrap{ max-width: 980px; margin:0 auto; padding: 34px 22px 0; }
+
+/* ---------- HEADER ---------- */
+header{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  flex-wrap:wrap; gap:16px; margin-bottom:8px;
+}
+.brand{ display:flex; align-items:center; gap:12px; }
+.brand-mark{
+  width:42px; height:42px; border:2px solid var(--cyan); border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono', monospace; font-weight:700; font-size:1rem; color:var(--cyan);
+  box-shadow: 0 0 14px var(--cyan-dim) inset;
+  position:relative;
+}
+.brand-mark::after{
+  content:''; position:absolute; inset:-6px; border:1px solid var(--border-soft); border-radius:9px; pointer-events:none;
+}
+.brand-text .title{
+  font-family:'JetBrains Mono', monospace; font-weight:700; font-size:1.32rem; letter-spacing:0.5px;
+  color:var(--ink);
+}
+.brand-text .subtitle{
+  font-family:'JetBrains Mono', monospace; font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--ink-faint); margin-top:2px;
+}
+
+.readout{
+  background: var(--panel); border:1px solid var(--border);
+  border-radius: var(--radius); padding:10px 18px; text-align:right; min-width:130px;
+  box-shadow: 0 4px 18px var(--shadow);
+  position:relative;
+}
+.readout::before{
+  content:'OVERALL'; position:absolute; top:6px; left:12px;
+  font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:1.5px; color:var(--ink-faint);
+}
+.readout .val{
+  font-family:'JetBrains Mono', monospace; font-weight:700; font-size:1.5rem; margin-top:12px; line-height:1;
+}
+.readout .val.safe{ color:var(--safe); text-shadow:0 0 12px var(--safe-dim); }
+.readout .val.danger{ color:var(--danger); text-shadow:0 0 12px var(--danger-dim); }
+.readout .val.dim{ color:var(--ink-faint); text-shadow:none; }
+
+/* ---------- CIRCUIT NODE TABS (years) ---------- */
+.circuit{
+  position:relative; display:flex; justify-content:space-between; align-items:center;
+  margin: 30px 6px 0; padding: 0 4px;
+}
+.circuit::before{
+  content:''; position:absolute; left:20px; right:20px; top:50%; height:1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+  transform: translateY(-50%);
+  z-index:0;
+}
+.node{
+  position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:8px;
+  cursor:pointer; user-select:none; background:var(--bg); padding:0 10px;
+}
+.node .dot{
+  width:14px; height:14px; border-radius:50%; border:2px solid var(--border);
+  background: var(--panel); transition: all .18s ease;
+}
+.node .lbl{
+  font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:1px; color:var(--ink-faint);
+  text-transform:uppercase; transition: color .18s ease;
+}
+.node.active .dot{
+  border-color: var(--cyan); background: var(--cyan); box-shadow: 0 0 10px 2px var(--cyan-dim);
+}
+.node.active .lbl{ color: var(--cyan); }
+.node:hover:not(.active) .dot{ border-color: var(--ink-dim); }
+
+/* ---------- SCOPE PANEL ---------- */
+.scope{
+  position:relative; margin-top:20px;
+  background: var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 26px 24px 22px;
+  box-shadow: 0 10px 34px var(--shadow);
+}
+.corner{ position:absolute; width:16px; height:16px; border-color: var(--cyan); opacity:0.7; }
+.corner.tl{ top:-1px; left:-1px; border-top:2px solid; border-left:2px solid; border-radius: 6px 0 0 0;}
+.corner.tr{ top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; border-radius: 0 6px 0 0;}
+.corner.bl{ bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; border-radius: 0 0 0 6px;}
+.corner.br{ bottom:-1px; right:-1px; border-bottom:2px solid; border-right:2px solid; border-radius: 0 0 6px 0;}
+
+.sems{ display:flex; gap:8px; margin-bottom:18px; }
+.sem-tab{
+  font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.5px;
+  padding:7px 14px; border:1px solid var(--border-soft); border-radius:20px; cursor:pointer;
+  color: var(--ink-dim); background:transparent; transition: all .15s ease;
+}
+.sem-tab.active{ background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+.sem-tab:hover:not(.active){ border-color: var(--ink-dim); color: var(--ink); }
+
+.sem-header{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border-soft);
+}
+.sem-name{ font-family:'JetBrains Mono', monospace; font-weight:600; font-size:1.05rem; color:var(--ink); }
+.led-tag{
+  font-family:'JetBrains Mono', monospace; font-weight:600; font-size:0.7rem; letter-spacing:1.5px;
+  text-transform:uppercase; padding:6px 14px; border-radius:20px; display:flex; align-items:center; gap:8px;
+}
+.led-tag::before{ content:''; width:8px; height:8px; border-radius:50%; }
+.led-tag.safe{ color:var(--safe); background:var(--safe-dim); }
+.led-tag.safe::before{ background:var(--safe); box-shadow:0 0 8px var(--safe); }
+.led-tag.danger{ color:var(--danger); background:var(--danger-dim); }
+.led-tag.danger::before{ background:var(--danger); box-shadow:0 0 8px var(--danger); }
+.led-tag.empty{ color:var(--ink-faint); background:transparent; border:1px dashed var(--border-soft); }
+.led-tag.empty::before{ background:var(--ink-faint); }
+
+/* ---------- SUBJECT TABLE ---------- */
+table{ width:100%; border-collapse:collapse; }
+thead th{
+  text-align:left; font-family:'JetBrains Mono', monospace; font-size:0.62rem;
+  text-transform:uppercase; letter-spacing:1.5px; color:var(--ink-faint);
+  padding:0 10px 10px; border-bottom:1px solid var(--border-soft);
+}
+tbody td{ padding:12px 10px; border-bottom:1px solid var(--border-soft); vertical-align:middle; }
+tbody tr:hover{ background: rgba(82,214,238,0.035); }
+
+.subj-input{
+  width:100%; background:transparent; border:none; border-bottom:1px solid transparent;
+  color:var(--ink); font-family:'Inter', sans-serif; font-size:0.9rem; padding:5px 2px;
+}
+.subj-input:focus{ outline:none; border-bottom:1px solid var(--cyan); }
+.subj-input::placeholder{ color: var(--ink-faint); }
+
+.num-input{
+  width:58px; background: var(--bg-deep); border:1px solid var(--border-soft); border-radius:4px;
+  color:var(--ink); font-family:'JetBrains Mono', monospace; font-size:0.85rem; padding:6px; text-align:center;
+}
+.num-input:focus{ outline:none; border-color:var(--cyan); }
+
+.pct-cell{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:0.95rem; }
+.pct-cell.safe{ color:var(--safe); }
+.pct-cell.danger{ color:var(--danger); }
+.pct-cell.dim{ color:var(--ink-faint); font-weight:500; }
+
+/* LED segment meter */
+.meter-cell{ min-width:150px; }
+.meter{ display:flex; gap:2px; height:12px; margin-bottom:5px; }
+.seg{ flex:1; background: var(--track); border-radius:1px; transition: background .12s ease; }
+.seg.on-safe{ background: var(--safe); box-shadow:0 0 4px var(--safe-dim); }
+.seg.on-danger{ background: var(--danger); box-shadow:0 0 4px var(--danger-dim); }
+.seg.threshold{ outline: 1px solid var(--amber); outline-offset: -1px; }
+.margin-note{ font-family:'JetBrains Mono', monospace; font-size:0.68rem; }
+.margin-note.safe{ color: var(--safe); }
+.margin-note.danger{ color: var(--danger); font-weight:600; }
+
+.del-btn{
+  background:none; border:1px solid var(--border-soft); color:var(--ink-faint); cursor:pointer;
+  width:26px; height:26px; border-radius:5px; font-size:0.85rem; line-height:1;
+}
+.del-btn:hover{ color:var(--danger); border-color:var(--danger); background:var(--danger-dim); }
+
+.empty-note{
+  font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+  padding:28px 4px; text-align:center; border:1px dashed var(--border-soft); border-radius:6px;
+}
+
+.add-row{ margin-top:16px; }
+.btn{
+  font-family:'JetBrains Mono', monospace; font-size:0.75rem; font-weight:600; letter-spacing:0.5px;
+  padding:10px 18px; border-radius:5px; cursor:pointer; border:1px solid var(--cyan);
+  background: var(--cyan-dim); color: var(--cyan); transition: all .15s ease;
+}
+.btn:hover{ background: var(--cyan); color: var(--bg-deep); box-shadow:0 0 16px var(--cyan-dim); }
+
+/* ---------- DASHBOARD TOGGLE ---------- */
+.dash-toggle{ display:flex; justify-content:flex-end; margin: 18px 6px 0; }
+.dash-toggle button{
+  font-family:'JetBrains Mono', monospace; font-size:0.7rem; background:transparent;
+  border:1px solid var(--border-soft); color:var(--ink-dim); padding:7px 14px;
+  border-radius:20px; cursor:pointer; letter-spacing:0.5px;
+}
+.dash-toggle button:hover{ border-color: var(--cyan); color: var(--cyan); }
+
+.passbook{
+  margin-top:16px; background:var(--panel); border:1px solid var(--border-soft);
+  border-radius:var(--radius); padding:24px; box-shadow: 0 10px 34px var(--shadow);
+}
+.passbook h2{
+  font-family:'JetBrains Mono', monospace; font-size:1rem; margin:0 0 4px; color:var(--ink);
+  letter-spacing:0.5px;
+}
+.pb-sub{
+  font-family:'JetBrains Mono', monospace; font-size:0.66rem; color:var(--ink-faint);
+  text-transform:uppercase; letter-spacing:1.5px; margin-bottom:18px;
+}
+.tiles{ display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px; }
+.tile{
+  border:1px solid var(--border-soft); border-radius:6px; padding:14px 16px; background: var(--panel-2);
+  position:relative;
+}
+.tile .t-name{
+  font-family:'JetBrains Mono', monospace; font-size:0.62rem; color:var(--ink-faint);
+  text-transform:uppercase; letter-spacing:1px;
+}
+.tile .t-pct{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:1.5rem; margin-top:6px; }
+.tile .t-pct.safe{ color:var(--safe); }
+.tile .t-pct.danger{ color:var(--danger); }
+.tile .t-pct.dim{ color:var(--ink-faint); font-size:1.15rem; }
+.tile .meter{ margin-top:10px; height:8px; }
+
+footer{
+  max-width:980px; margin: 30px auto 0; padding:0 22px;
+  text-align:center; font-family:'JetBrains Mono', monospace; font-size:0.62rem;
+  color: var(--ink-faint); letter-spacing:1px;
+}
+footer::before{ content:'// '; color: var(--border); }
+
+@media (max-width:640px){
+  .brand-text .title{ font-size:1.1rem; }
+  .readout{ min-width:110px; padding:8px 14px; }
+  .meter-cell{ min-width:110px; }
+  .circuit{ margin-top:24px; }
+  .node .lbl{ font-size:0.58rem; }
+}
+
+:focus-visible{ outline: 2px solid var(--cyan); outline-offset:2px; }
